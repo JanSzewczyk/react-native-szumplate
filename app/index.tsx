@@ -1,9 +1,6 @@
 import { Text, View } from "react-native";
 
-import { env } from "~/data/env";
-
 export default function Index() {
-  console.log("Index", env);
   return (
     <View
       style={{
