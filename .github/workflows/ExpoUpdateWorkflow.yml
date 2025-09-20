@@ -57,7 +57,7 @@ jobs:
           echo "Checking for available Expo SDK updates..."
 
           # Get latest SDK version
-          LATEST_SDK=$(npm view expo versions --json | jq -r '.[-1]')
+          LATEST_SDK=$(npm view expo version)
           echo "latest_sdk=$LATEST_SDK" >> $GITHUB_OUTPUT
           echo "Latest Expo SDK version: $LATEST_SDK"
 
@@ -259,47 +259,6 @@ jobs:
               });
               console.log('Added comment to PR');
             }
-
-      - name: Send Slack notification
-        if: steps.sdk-check.outputs.update_available == 'true' && env.SLACK_WEBHOOK_URL != ''
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{
-            "text": "🚀 Expo SDK Update Available",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*Expo SDK Update Available*\n\n• Current: `${{ steps.current-version.outputs.current }}`\n• Latest: `${{ steps.sdk-check.outputs.latest_sdk }}`\n• Repository: ${{ github.repository }}"
-                }
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View Changelog"
-                    },
-                    "url": "https://docs.expo.dev/versions/latest/"
-                  },
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View Repository"
-                    },
-                    "url": "${{ github.server_url }}/${{ github.repository }}"
-                  }
-                ]
-              }
-            ]
-          }' $SLACK_WEBHOOK_URL
-
       - name: Summary
         run: |
           echo "## 📊 Expo Update Check Summary" >> $GITHUB_STEP_SUMMARY
