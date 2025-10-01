@@ -13,7 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.anonymous.reactnativeszumplate"
+    bundleIdentifier: "pl.szumtech.reactnativeszumplate"
   },
   android: {
     adaptiveIcon: {
@@ -24,7 +24,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
-    package: "com.anonymous.reactnativeszumplate"
+    package: "pl.szumtech.reactnativeszumplate"
   },
   web: {
     bundler: "metro",
@@ -33,7 +33,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     "expo-router",
-    [
+    "expo-web-browser",
+      [
       "expo-splash-screen",
       {
         image: "./assets/images/splash-icon.png",
