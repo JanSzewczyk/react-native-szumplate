@@ -5,7 +5,7 @@
 ### Modern, production-ready React Native starter template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Expo SDK](https://img.shields.io/badge/Expo-~54.0.11-000020.svg?style=flat&logo=expo)](https://expo.dev/)
+[![Expo SDK](https://img.shields.io/badge/Expo-54.0.11-000020.svg?style=flat&logo=expo)](https://expo.dev/)
 [![React Native](https://img.shields.io/badge/React%20Native-0.81.4-61DAFB.svg?style=flat&logo=react)](https://reactnative.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 
@@ -31,13 +31,13 @@
 ## ✨ Features
 
 ### 🎯 Core Technologies
-- **React Native 0.81.4** with **React 19.1.0** - Latest stable versions
+- **React Native 0.81** with **React 19** - Latest stable versions
 - **Expo SDK 54** - Managed workflow with EAS Build support
-- **TypeScript 5.9.2** - Full type safety across the entire codebase
+- **TypeScript 5.9** - Full type safety across the entire codebase
 - **Metro Bundler** - Optimized for fast refresh and bundling
 
 ### 🧭 Navigation & Routing
-- **Expo Router 6.0** - File-based routing with deep linking support
+- **Expo Router 6** - File-based routing with deep linking support
 - **React Navigation 7** - Native stack and bottom tabs navigation
 - **Type-safe routing** - Fully typed navigation params
 
@@ -100,7 +100,7 @@
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** 18+ (LTS recommended) - [Download](https://nodejs.org/)
+- **Node.js** 22+ - [Download](https://nodejs.org/)
 - **npm** (comes with Node.js) or your preferred package manager
 - **Git** - [Download](https://git-scm.com/)
 
@@ -205,19 +205,16 @@ react-native-szumplate/
 │   │   ├── _layout.tsx         # Root layout with navigation
 │   │   ├── index.tsx           # Home screen
 │   │   └── global.css          # Global Tailwind styles
-│   │
 │   ├── components/             # Reusable UI components
-│   │
-│   ├── hooks/                  # Custom React hooks
-│   ├── utils/                  # Utility functions
+│   ├── hooks/                  # Custom React hooks (ready for use)
+│   ├── utils/                  # Utility functions (ready for use)
 │   ├── data/                   # Data models and schemas
 │   │   └── env.ts              # Environment variables validation
-│   ├── server/                 # API/Server logic
-│   └── tests/                  # Test files
-│
+│   ├── server/                 # API/Server logic (ready for use)
+│   └── tests/                  # Test files (ready for use)
+
 ├── assets/                     # Static assets (images, fonts)
 ├── scripts/                    # Build and utility scripts
-│
 ├── .env.local                  # Local environment variables (gitignored)
 ├── .env.example                # Environment variables template
 ├── app.config.ts               # Expo app configuration
@@ -262,6 +259,7 @@ react-native-szumplate/
 | `npm run lint` | Run ESLint to check code quality |
 | `npm run prettier:check` | Check code formatting with Prettier |
 | `npm run prettier:write` | Format code with Prettier |
+| `npm run sync-versions` | Sync package versions from package.json to README |
 
 ### Development Workflow
 
@@ -719,31 +717,31 @@ This checks for:
 ## 🛠️ Tech Stack
 
 ### Core Framework
-- **[React](https://react.dev/)** 19.1.0 - UI library
-- **[React Native](https://reactnative.dev/)** 0.81.4 - Mobile framework
-- **[Expo](https://expo.dev/)** ~54.0.11 - Development platform
-- **[TypeScript](https://www.typescriptlang.org/)** 5.9.2 - Type safety
+- **[React](https://react.dev/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/react?style=flat-square&label=) - UI library
+- **[React Native](https://reactnative.dev/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/react-native?style=flat-square&label=) - Mobile framework
+- **[Expo](https://expo.dev/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo?style=flat-square&label=) - Development platform
+- **[TypeScript](https://www.typescriptlang.org/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/typescript?style=flat-square&label=) - Type safety
 
 ### Navigation & Routing
-- **[Expo Router](https://docs.expo.dev/router/introduction/)** ~6.0.9 - File-based routing
-- **[React Navigation](https://reactnavigation.org/)** 7 - Navigation primitives
+- **[Expo Router](https://docs.expo.dev/router/introduction/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-router?style=flat-square&label=) - File-based routing
+- **[React Navigation](https://reactnavigation.org/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/@react-navigation/native?style=flat-square&label=) - Navigation primitives
 
 ### Styling
-- **[NativeWind](https://www.nativewind.dev/)** 4.2.1 - Tailwind for React Native
-- **[Tailwind CSS](https://tailwindcss.com/)** 3.4.17 - Utility-first CSS
+- **[NativeWind](https://www.nativewind.dev/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/nativewind?style=flat-square&label=) - Tailwind for React Native
+- **[Tailwind CSS](https://tailwindcss.com/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/tailwindcss?style=flat-square&label=) - Utility-first CSS
 
 ### Animation
-- **[React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)** ~4.1.1 - Smooth animations
-- **[React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)** ~2.28.0 - Native gestures
+- **[React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/react-native-reanimated?style=flat-square&label=) - Smooth animations
+- **[React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/react-native-gesture-handler?style=flat-square&label=) - Native gestures
 
 ### Validation & Types
-- **[Zod](https://zod.dev/)** 4.1.11 - Schema validation
-- **[T3 Env](https://env.t3.gg/)** 0.13.8 - Type-safe environment variables
+- **[Zod](https://zod.dev/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/zod?style=flat-square&label=) - Schema validation
+- **[T3 Env](https://env.t3.gg/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/@t3-oss/env-core?style=flat-square&label=) - Type-safe environment variables
 
 ### Development Tools
-- **[ESLint](https://eslint.org/)** 9.25.0 - Code linting
-- **[Prettier](https://prettier.io/)** 3.6.2 - Code formatting
-- **[@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)** - Shared Prettier config
+- **[ESLint](https://eslint.org/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/eslint?style=flat-square&label=) - Code linting
+- **[Prettier](https://prettier.io/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/prettier?style=flat-square&label=) - Code formatting
+- **[@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/@szum-tech/prettier-config?style=flat-square&label=) - Shared Prettier config
 
 ### Expo Modules
 - **expo-blur** - Native blur effects
