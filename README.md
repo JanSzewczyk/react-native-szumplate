@@ -5,9 +5,9 @@
 ### Modern, production-ready React Native starter template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Expo SDK](https://img.shields.io/badge/Expo-54.0.11-000020.svg?style=flat&logo=expo)](https://expo.dev/)
-[![React Native](https://img.shields.io/badge/React%20Native-0.81.4-61DAFB.svg?style=flat&logo=react)](https://reactnative.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Expo SDK](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo??style=flat&logo=expo&label=Expo&color=000020)](https://expo.dev/)
+[![React Native](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/react-native?style=flat&logo=react&label=React+Native&color=61dafb)](https://reactnative.dev/)
+[![TypeScript](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/typescript?style=flat&logo=typescript&label=TypeScript&color=3178c6)](https://www.typescriptlang.org/)
 
 [Getting Started](#-getting-started) • [Features](#-features) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
@@ -279,8 +279,6 @@ npm run prettier:check
 
 ## 🔐 Environment Variables
 
-This template uses **T3 Env** for type-safe environment variable validation with Zod schemas.
-
 ### Setup
 
 1. Copy the example file:
@@ -294,13 +292,6 @@ cp .env.example .env.local
 EXPO_PUBLIC_FEATURE_FLAG_X=true
 ```
 
-### Validation
-
-Environment variables are validated at runtime using Zod in `src/data/env.ts`. This ensures:
-- ✅ Required variables are present
-- ✅ Variables have correct types and formats
-- ✅ Type-safe access throughout the app
-
 ### Naming Convention
 
 Expo requires public environment variables to be prefixed with `EXPO_PUBLIC_`:
@@ -311,6 +302,83 @@ EXPO_PUBLIC_ENABLE_FEATURE_X=true
 ```
 
 > **Important**: Never commit `.env.local` or any file containing secrets. Only commit `.env.example` with placeholder values.
+
+### 💻 Environment Variables Handling
+
+This template uses **T3 Env** with **Zod** for runtime validation of environment variables in `src/data/env.ts`.
+
+#### Configuration
+
+```typescript
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  // Only variables with this prefix are allowed on the client
+  clientPrefix: "EXPO_PUBLIC_",
+
+  // Define and validate your client-side environment variables
+  client: {
+    EXPO_PUBLIC_API_URL: z.string().url(),
+    EXPO_PUBLIC_FEATURE_FLAG_X: z
+      .enum(["true", "false"])
+      .transform((value) => value === "true")
+  },
+
+  // Map process.env variables to your schema
+  runtimeEnv: {
+    EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL,
+    EXPO_PUBLIC_FEATURE_FLAG_X: process.env.EXPO_PUBLIC_FEATURE_FLAG_X
+  },
+
+  // Treat empty strings as undefined
+  emptyStringAsUndefined: true
+});
+```
+
+#### Benefits
+
+- ✅ **Type Safety** - Full TypeScript autocomplete for `env.EXPO_PUBLIC_*`
+- ✅ **Runtime Validation** - Validates variables at app startup using Zod schemas
+- ✅ **Build-Time Checks** - Fails fast if required variables are missing
+- ✅ **Transform Values** - Convert strings to booleans, numbers, or custom types
+- ✅ **Single Source of Truth** - One place to define all environment variables
+
+#### Usage
+
+```typescript
+import { env } from "~/data/env";
+
+// Type-safe access with autocomplete
+const apiUrl = env.EXPO_PUBLIC_API_URL; // string
+const isFeatureEnabled = env.EXPO_PUBLIC_FEATURE_FLAG_X; // boolean
+```
+
+#### Adding New Variables
+
+1. Add to `.env.local`:
+```bash
+EXPO_PUBLIC_NEW_VARIABLE=value
+```
+
+2. Define validation in `src/data/env.ts`:
+3. 
+```typescript
+client: {
+  EXPO_PUBLIC_NEW_VARIABLE: z.string().min(1)
+}
+runtimeEnv: {
+  EXPO_PUBLIC_NEW_VARIABLE: process.env.EXPO_PUBLIC_NEW_VARIABLE
+}
+```
+
+3. Use in your app:
+4. 
+```typescript
+import { env } from "~/data/env";
+
+console.log(env.EXPO_PUBLIC_NEW_VARIABLE);
+```
 
 ---
 
