@@ -34,7 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-web-browser",
-      [
+    [
       "expo-splash-screen",
       {
         image: "./assets/images/splash-icon.png",
