@@ -601,10 +601,24 @@ npm run prettier:write
 ### CI/CD Pipeline
 
 GitHub Actions workflow (`.github/workflows/pr-check.yml`) automatically runs on pull requests:
+
+#### Code Quality Checks
 - ✅ **Prettier Check** - Ensures consistent code formatting
 - ✅ **ESLint** - Validates code quality and uploads results to GitHub Code Scanning
 - ✅ **TypeScript** - Type checking for type safety
-- ✅ **Dependency Review** - Checks for vulnerable or outdated dependencies
+
+#### Security & Dependencies
+- 🔒 **Security Audit** - Runs npm audit and Snyk scanning for vulnerabilities
+- 📦 **Dependency Review** - Checks for vulnerable or outdated dependencies
+- 📦 **Duplicate Dependencies** - Detects duplicate packages that bloat bundle size
+- ⚖️ **License Compliance** - Validates dependency licenses against allowed list
+
+#### Build & Performance
+- 🏥 **Expo Doctor** - Validates Expo configuration and SDK compatibility
+- 🏗️ **Build Validation** - Tests web and Android prebuild to catch build errors early
+- 📊 **Bundle Size Analysis** - Monitors JavaScript bundle size and reports changes
+
+> **Note**: The Snyk security scan requires `SNYK_TOKEN` secret to be configured in repository settings.
 
 ### Pre-Commit Workflow (Recommended)
 
