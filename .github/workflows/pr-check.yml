@@ -86,6 +86,11 @@ jobs:
     steps:
       - name: Checkout code 📚
         uses: actions/checkout@v5
+      - name: Checkout base branch 📚
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
       - name: Set up Node 🟢
         uses: actions/setup-node@v5
         with:
@@ -93,14 +98,62 @@ jobs:
           cache: "npm"
       - name: Install dependencies ⚙️
         run: npm ci
-      - name: Export web build 🌐
-        run: npx expo export:web
-      - name: Analyze bundle size 📊
-        uses: andresz1/size-limit-action@v1
+      - name: Export production build 🌐
+        run: npx expo export --platform web
+      - name: Calculate current bundle size 📊
+        id: current-size
+        run: |
+          CURRENT_SIZE=$(du -sb dist | cut -f1)
+          echo "size=$CURRENT_SIZE" >> $GITHUB_OUTPUT
+          echo "Current bundle size: $CURRENT_SIZE bytes"
+      - name: Install base dependencies ⚙️
+        working-directory: base
+        run: npm ci
+      - name: Export base build 🌐
+        working-directory: base
+        run: npx expo export --platform web
+      - name: Calculate base bundle size 📊
+        id: base-size
+        run: |
+          BASE_SIZE=$(du -sb base/dist | cut -f1)
+          echo "size=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "Base bundle size: $BASE_SIZE bytes"
+      - name: Compare bundle sizes and comment 💬
+        uses: actions/github-script@v7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_script: export:web
-          skip_step: build
+          script: |
+            const currentSize = parseInt('${{ steps.current-size.outputs.size }}');
+            const baseSize = parseInt('${{ steps.base-size.outputs.size }}');
+            const diff = currentSize - baseSize;
+            const diffPercent = ((diff / baseSize) * 100).toFixed(2);
+
+            const formatSize = (bytes) => {
+              if (bytes < 1024) return bytes + ' B';
+              if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+              return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            };
+
+            const emoji = diff > 0 ? '📈' : diff < 0 ? '📉' : '➡️';
+            const status = Math.abs(diffPercent) < 1 ? '✅' : diff > 0 ? '⚠️' : '✅';
+
+            const body = `## ${status} Bundle Size Analysis ${emoji}
+
+            | Metric | Size | Change |
+            |--------|------|--------|
+            | **Current** | ${formatSize(currentSize)} | - |
+            | **Base (${context.payload.pull_request.base.ref})** | ${formatSize(baseSize)} | - |
+            | **Difference** | ${formatSize(Math.abs(diff))} | ${diffPercent > 0 ? '+' : ''}${diffPercent}% |
+
+            ${Math.abs(diff) < 1024 ? '✅ Bundle size change is negligible' :
+              diff > 0 ? '⚠️ Bundle size increased' : '✅ Bundle size decreased'}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
 
   expo-doctor:
     name: Expo Doctor 🏥
@@ -163,7 +216,7 @@ jobs:
         run: npx expo prebuild --platform android --clean
       - name: Build web 🌐
         if: matrix.platform == 'web'
-        run: npx expo export:web
+        run: npx expo export --platform web
       - name: Check Android build files
         if: matrix.platform == 'android'
         run: |
