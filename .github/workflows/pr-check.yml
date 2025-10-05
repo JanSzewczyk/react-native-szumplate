@@ -148,13 +148,31 @@ jobs:
               diff > 0 ? '⚠️ Bundle size increased' : '✅ Bundle size decreased'}
             `;
 
-            github.rest.issues.createComment({
+            const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
+              repo: context.repo.repo
             });
 
+            const bundleSizeComment = comments.data.find(comment => 
+              comment.body.includes('Bundle Size Analysis')
+            );
+
+            if (bundleSizeComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: bundleSizeComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
   expo-doctor:
     name: Expo Doctor 🏥
     runs-on: ubuntu-latest
