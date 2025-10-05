@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "lint": "expo lint",
-    "lint:ci": "expo lint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
+    "lint:ci": "eslint . -o eslint-results.sarif -f @microsoft/eslint-formatter-sarif",
     "lint:fix": "expo lint --fix",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",

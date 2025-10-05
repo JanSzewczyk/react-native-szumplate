@@ -32,7 +32,7 @@
 
 ### 🎯 Core Technologies
 - **React Native 0.81.4** with **React 19.1** - Latest stable versions
-- **Expo SDK 54** - Managed workflow with EAS Build support
+- **Expo SDK 54.0.12** - Managed workflow with EAS Build support
 - **TypeScript 5.9** - Full type safety across the entire codebase
 - **Metro Bundler** - Optimized for fast refresh and bundling
 
@@ -60,11 +60,11 @@
 - **T3 Env 0.13.8** - Type-safe environment variables
 
 ### 🛠️ Developer Experience
-- **ESLint 9** - Code quality and consistency
-- **Prettier 3.6** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)
+- **ESLint 9.25** - Code quality and consistency
+- **Prettier 3.6.2** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config) 1.6.2
 - **Fast Refresh** - Instant feedback during development
 - **Expo DevTools** - Powerful debugging tools
-- **CI/CD** - GitHub Actions for PR checks (lint, type-check, prettier, dependency review)
+- **CI/CD** - Comprehensive GitHub Actions workflow for PR checks
 
 ### 📱 Platform Support
 - ✅ **iOS** - Native iOS apps
@@ -243,14 +243,14 @@ react-native-szumplate/
 
 ### Important Configuration Files
 
-- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled)
+- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled, React Compiler experimental support)
 - **`babel.config.js`** - Babel transpiler configuration (Reanimated plugin must be last!)
 - **`eslint.config.cjs`** - ESLint 9 flat config with Expo preset
 - **`metro.config.cjs`** - Metro bundler configuration for JavaScript transformation
 - **`prettier.config.mjs`** - Prettier code formatting with @szum-tech/prettier-config
 - **`tailwind.config.ts`** - Tailwind CSS customization (colors, spacing, fonts, etc.)
 - **`tsconfig.json`** - TypeScript compiler options, strict mode, and path aliases
-- **`.github/workflows/pr-check.yml`** - CI/CD pipeline for PR checks
+- **`.github/workflows/pr-check.yml`** - Comprehensive CI/CD pipeline with code quality, security, and build validation checks
 
 ---
 
@@ -565,7 +565,7 @@ const user = UserSchema.parse(data);
 
 ### Linting
 
-ESLint 9 is configured with Expo's flat config preset:
+ESLint 9.25 is configured with Expo's flat config preset:
 
 ```bash
 # Check for linting errors
@@ -574,7 +574,7 @@ npm run lint
 # Automatically fix linting issues
 npm run lint:fix
 
-# Generate SARIF report for CI/CD
+# Generate SARIF report for CI/CD (GitHub Code Scanning)
 npm run lint:ci
 ```
 
@@ -588,7 +588,7 @@ npm run type-check
 
 ### Formatting
 
-Prettier 3.6 is configured with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config):
+Prettier 3.6.2 is configured with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config) 1.6.2:
 
 ```bash
 # Check formatting
@@ -603,22 +603,20 @@ npm run prettier:write
 GitHub Actions workflow (`.github/workflows/pr-check.yml`) automatically runs on pull requests:
 
 #### Code Quality Checks
-- ✅ **Prettier Check** - Ensures consistent code formatting
-- ✅ **ESLint** - Validates code quality and uploads results to GitHub Code Scanning
-- ✅ **TypeScript** - Type checking for type safety
+- 🧹 **Prettier Check** - Ensures consistent code formatting
+- ⬣ **ESLint** - Validates code quality and uploads SARIF results to GitHub Code Scanning
+- 🛠️ **TypeScript** - Type checking for type safety
 
 #### Security & Dependencies
-- 🔒 **Security Audit** - Runs npm audit and Snyk scanning for vulnerabilities
-- 📦 **Dependency Review** - Checks for vulnerable or outdated dependencies
-- 📦 **Duplicate Dependencies** - Detects duplicate packages that bloat bundle size
-- ⚖️ **License Compliance** - Validates dependency licenses against allowed list
+- 📦 **Dependency Review** - Checks for vulnerable or outdated dependencies with PR comments on failures
+- ⚖️ **License Compliance** - Validates dependency licenses against allowed list (MIT, Apache-2.0, BSD, ISC, etc.)
 
 #### Build & Performance
 - 🏥 **Expo Doctor** - Validates Expo configuration and SDK compatibility
 - 🏗️ **Build Validation** - Tests web and Android prebuild to catch build errors early
-- 📊 **Bundle Size Analysis** - Monitors JavaScript bundle size and reports changes
+- 📊 **Bundle Size Analysis** - Compares bundle size against base branch and comments on PR with detailed metrics
 
-> **Note**: The Snyk security scan requires `SNYK_TOKEN` secret to be configured in repository settings.
+All checks run on **Node.js 22.x** with proper caching for faster execution.
 
 ### Pre-Commit Workflow (Recommended)
 
@@ -853,7 +851,7 @@ This checks for:
 - **[T3 Env](https://env.t3.gg/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/@t3-oss/env-core?style=flat-square&label=) - Type-safe environment variables
 
 ### Development Tools
-- **[ESLint](https://eslint.org/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/eslint?style=flat-square&label=) - Code linting
+- **[ESLint](https://eslint.org/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/eslint?style=flat-square&label=) - Code linting with Expo flat config
 - **[Prettier](https://prettier.io/)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/prettier?style=flat-square&label=) - Code formatting
 - **[@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/@szum-tech/prettier-config?style=flat-square&label=) - Shared Prettier config
 
