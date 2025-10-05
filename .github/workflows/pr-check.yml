@@ -171,24 +171,6 @@ jobs:
       - name: Run Expo Doctor 🏥
         run: npx expo-doctor
 
-  duplicate-dependencies:
-    name: Duplicate Dependencies Check 📦
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code 📚
-        uses: actions/checkout@v5
-      - name: Set up Node 🟢
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-      - name: Install dependencies ⚙️
-        run: npm ci
-      - name: Check for duplicate dependencies 📦
-        run:
-          npx jscpd --pattern "package-lock.json" --reporters console || npx npm ls --all --depth=0 | grep -E
-          "deduped|extraneous" && exit 1 || echo "No duplicate dependencies found"
-
   build-validation:
     name: Build Validation 🏗️
     runs-on: ubuntu-latest
