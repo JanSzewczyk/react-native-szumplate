@@ -76,3 +76,119 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           comment-summary-in-pr: on-failure
+
+  bundle-size:
+    name: Bundle Size Analysis 📊
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Export web build 🌐
+        run: npx expo export:web
+      - name: Analyze bundle size 📊
+        uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          build_script: export:web
+          skip_step: build
+
+  expo-doctor:
+    name: Expo Doctor 🏥
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Run Expo Doctor 🏥
+        run: npx expo-doctor
+
+  duplicate-dependencies:
+    name: Duplicate Dependencies Check 📦
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Check for duplicate dependencies 📦
+        run:
+          npx jscpd --pattern "package-lock.json" --reporters console || npx npm ls --all --depth=0 | grep -E
+          "deduped|extraneous" && exit 1 || echo "No duplicate dependencies found"
+
+  build-validation:
+    name: Build Validation 🏗️
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [web, android]
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Set up Java (for Android) ☕
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Prebuild ${{ matrix.platform }} 🏗️
+        if: matrix.platform == 'android'
+        run: npx expo prebuild --platform android --clean
+      - name: Build web 🌐
+        if: matrix.platform == 'web'
+        run: npx expo export:web
+      - name: Check Android build files
+        if: matrix.platform == 'android'
+        run: |
+          if [ ! -d "android" ]; then
+            echo "Android directory not generated"
+            exit 1
+          fi
+          echo "Android prebuild successful"
+
+  license-compliance:
+    name: License Compliance ⚖️
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code 📚
+        uses: actions/checkout@v5
+      - name: Set up Node 🟢
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install dependencies ⚙️
+        run: npm ci
+      - name: Check licenses ⚖️
+        run: |
+          npx license-checker --summary --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD;CC0-1.0;Unlicense;Python-2.0" || echo "⚠️ Some dependencies have licenses that need review"
