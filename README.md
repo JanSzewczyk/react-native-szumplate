@@ -31,7 +31,7 @@
 ## ✨ Features
 
 ### 🎯 Core Technologies
-- **React Native 0.81** with **React 19** - Latest stable versions
+- **React Native 0.81.4** with **React 19.1** - Latest stable versions
 - **Expo SDK 54** - Managed workflow with EAS Build support
 - **TypeScript 5.9** - Full type safety across the entire codebase
 - **Metro Bundler** - Optimized for fast refresh and bundling
@@ -43,9 +43,10 @@
 
 ### 🎨 Styling & UI
 - **NativeWind 4.2.1** - Tailwind CSS for React Native
-- **Tailwind CSS 3.4** - Utility-first CSS framework
+- **Tailwind CSS 3.4.17** - Utility-first CSS framework
 - **Expo Blur** - Native blur effects
 - **Expo Image** - Optimized image component
+- **Expo Symbols** - Native SF Symbols support
 - **Vector Icons** - Comprehensive icon library
 
 ### ⚡ Animations & Gestures
@@ -55,14 +56,15 @@
 
 ### 🔒 Type Safety & Validation
 - **TypeScript** - Static type checking
-- **Zod 4.1** - Runtime schema validation
-- **T3 Env** - Type-safe environment variables
+- **Zod 4.1.11** - Runtime schema validation
+- **T3 Env 0.13.8** - Type-safe environment variables
 
 ### 🛠️ Developer Experience
 - **ESLint 9** - Code quality and consistency
-- **Prettier** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)
+- **Prettier 3.6** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)
 - **Fast Refresh** - Instant feedback during development
 - **Expo DevTools** - Powerful debugging tools
+- **CI/CD** - GitHub Actions for PR checks (lint, type-check, prettier, dependency review)
 
 ### 📱 Platform Support
 - ✅ **iOS** - Native iOS apps
@@ -200,6 +202,9 @@ Or press `w` in the terminal after starting the dev server.
 
 ```
 react-native-szumplate/
+├── .github/
+│   └── workflows/
+│       └── pr-check.yml        # CI/CD workflow for PR checks
 ├── src/
 │   ├── app/                    # Expo Router file-based routes
 │   │   ├── _layout.tsx         # Root layout with navigation
@@ -212,18 +217,18 @@ react-native-szumplate/
 │   │   └── env.ts              # Environment variables validation
 │   ├── server/                 # API/Server logic (ready for use)
 │   └── tests/                  # Test files (ready for use)
-
 ├── assets/                     # Static assets (images, fonts)
 ├── scripts/                    # Build and utility scripts
 ├── .env.local                  # Local environment variables (gitignored)
 ├── .env.example                # Environment variables template
 ├── app.config.ts               # Expo app configuration
 ├── babel.config.js             # Babel configuration
-├── eslint.config.cjs           # ESLint configuration
+├── eslint.config.cjs           # ESLint configuration (Expo flat config)
 ├── metro.config.cjs            # Metro bundler configuration
 ├── prettier.config.mjs         # Prettier configuration
 ├── tailwind.config.ts          # Tailwind CSS configuration
 ├── tsconfig.json               # TypeScript configuration
+├── SECURITY.md                 # Security policy
 └── package.json                # Project dependencies and scripts
 ```
 
@@ -238,13 +243,14 @@ react-native-szumplate/
 
 ### Important Configuration Files
 
-- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings)
+- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled)
 - **`babel.config.js`** - Babel transpiler configuration (Reanimated plugin must be last!)
-- **`eslint.config.cjs`** - ESLint 9 code quality rules and linting standards
+- **`eslint.config.cjs`** - ESLint 9 flat config with Expo preset
 - **`metro.config.cjs`** - Metro bundler configuration for JavaScript transformation
 - **`prettier.config.mjs`** - Prettier code formatting with @szum-tech/prettier-config
 - **`tailwind.config.ts`** - Tailwind CSS customization (colors, spacing, fonts, etc.)
 - **`tsconfig.json`** - TypeScript compiler options, strict mode, and path aliases
+- **`.github/workflows/pr-check.yml`** - CI/CD pipeline for PR checks
 
 ---
 
@@ -257,9 +263,11 @@ react-native-szumplate/
 | `npm run ios` | Run the app on iOS simulator (macOS only) |
 | `npm run web` | Run the app in web browser |
 | `npm run lint` | Run ESLint to check code quality |
+| `npm run lint:ci` | Run ESLint with SARIF output for CI/CD |
+| `npm run lint:fix` | Run ESLint and automatically fix issues |
 | `npm run prettier:check` | Check code formatting with Prettier |
 | `npm run prettier:write` | Format code with Prettier |
-| `npm run sync-versions` | Sync package versions from package.json to README |
+| `npm run type-check` | Run TypeScript type checking without emitting files |
 
 ### Development Workflow
 
@@ -273,6 +281,7 @@ npm run ios      # or android, or web
 # Check code quality before committing
 npm run lint
 npm run prettier:check
+npm run type-check
 ```
 
 ---
@@ -305,7 +314,7 @@ EXPO_PUBLIC_ENABLE_FEATURE_X=true
 
 ### 💻 Environment Variables Handling
 
-This template uses **T3 Env** with **Zod** for runtime validation of environment variables in `src/data/env.ts`.
+This template uses **T3 Env 0.13.8** with **Zod 4.1.11** for runtime validation of environment variables in `src/data/env.ts`.
 
 #### Configuration
 
@@ -556,15 +565,30 @@ const user = UserSchema.parse(data);
 
 ### Linting
 
-ESLint 9 is configured with Expo's recommended rules:
+ESLint 9 is configured with Expo's flat config preset:
 
 ```bash
+# Check for linting errors
 npm run lint
+
+# Automatically fix linting issues
+npm run lint:fix
+
+# Generate SARIF report for CI/CD
+npm run lint:ci
+```
+
+### Type Checking
+
+TypeScript 5.9 with strict mode enabled:
+
+```bash
+npm run type-check
 ```
 
 ### Formatting
 
-Prettier is configured with Szum-Tech's shared config:
+Prettier 3.6 is configured with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config):
 
 ```bash
 # Check formatting
@@ -574,10 +598,18 @@ npm run prettier:check
 npm run prettier:write
 ```
 
+### CI/CD Pipeline
+
+GitHub Actions workflow (`.github/workflows/pr-check.yml`) automatically runs on pull requests:
+- ✅ **Prettier Check** - Ensures consistent code formatting
+- ✅ **ESLint** - Validates code quality and uploads results to GitHub Code Scanning
+- ✅ **TypeScript** - Type checking for type safety
+- ✅ **Dependency Review** - Checks for vulnerable or outdated dependencies
+
 ### Pre-Commit Workflow (Recommended)
 
 ```bash
-npm run lint && npm run prettier:write
+npm run lint:fix && npm run prettier:write && npm run type-check
 ```
 
 ---
@@ -812,14 +844,17 @@ This checks for:
 - **[@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/dev/@szum-tech/prettier-config?style=flat-square&label=) - Shared Prettier config
 
 ### Expo Modules
-- **expo-blur** - Native blur effects
-- **expo-font** - Custom font loading
-- **expo-haptics** - Haptic feedback
-- **expo-image** - Optimized images
-- **expo-linking** - Deep linking
-- **expo-status-bar** - Status bar control
-- **expo-system-ui** - System UI customization
-- **expo-web-browser** - In-app browser
+- **expo-blur** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-blur?style=flat-square&label=) - Native blur effects
+- **expo-constants** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-constants?style=flat-square&label=) - System constants
+- **expo-font** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-font?style=flat-square&label=) - Custom font loading
+- **expo-haptics** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-haptics?style=flat-square&label=) - Haptic feedback
+- **expo-image** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-image?style=flat-square&label=) - Optimized images
+- **expo-linking** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-linking?style=flat-square&label=) - Deep linking
+- **expo-splash-screen** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-splash-screen?style=flat-square&label=) - Native splash screen
+- **expo-status-bar** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-status-bar?style=flat-square&label=) - Status bar control
+- **expo-symbols** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-symbols?style=flat-square&label=) - SF Symbols support (iOS)
+- **expo-system-ui** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-system-ui?style=flat-square&label=) - System UI customization
+- **expo-web-browser** ![](https://img.shields.io/github/package-json/dependency-version/JanSzewczyk/react-native-szumplate/expo-web-browser?style=flat-square&label=) - In-app browser
 
 ---
 
