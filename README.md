@@ -31,8 +31,8 @@
 ## ✨ Features
 
 ### 🎯 Core Technologies
-- **React Native 0.81.4** with **React 19.1** - Latest stable versions
-- **Expo SDK 54.0.12** - Managed workflow with EAS Build support
+- **React Native 0.83** with **React 19.2** - Latest stable versions
+- **Expo SDK 54** - Managed workflow with EAS Build support
 - **TypeScript 5.9** - Full type safety across the entire codebase
 - **Metro Bundler** - Optimized for fast refresh and bundling
 
@@ -42,26 +42,27 @@
 - **Type-safe routing** - Fully typed navigation params
 
 ### 🎨 Styling & UI
-- **NativeWind 4.2.1** - Tailwind CSS for React Native
-- **Tailwind CSS 3.4.17** - Utility-first CSS framework
+- **NativeWind 4.2** - Tailwind CSS for React Native
+- **Tailwind CSS 3.4** - Utility-first CSS framework
 - **Expo Blur** - Native blur effects
 - **Expo Image** - Optimized image component
 - **Expo Symbols** - Native SF Symbols support
 - **Vector Icons** - Comprehensive icon library
 
 ### ⚡ Animations & Gestures
-- **Reanimated 4.1** - 60 FPS native animations
+- **Reanimated 4.2** - 60 FPS native animations
 - **Gesture Handler** - Native touch handling
 - **React Native Worklets** - Run JavaScript on UI thread
 
 ### 🔒 Type Safety & Validation
 - **TypeScript** - Static type checking
-- **Zod 4.1.11** - Runtime schema validation
-- **T3 Env 0.13.8** - Type-safe environment variables
+- **Zod 4.3** - Runtime schema validation
+- **T3 Env 0.13** - Type-safe environment variables
 
 ### 🛠️ Developer Experience
-- **ESLint 9.25** - Code quality and consistency
-- **Prettier 3.6.2** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config) 1.6.2
+- **ESLint 9** - Code quality and consistency with Expo flat config
+- **Prettier 3.8** - Code formatting with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config)
+- **Dependabot** - Automated weekly dependency updates
 - **Fast Refresh** - Instant feedback during development
 - **Expo DevTools** - Powerful debugging tools
 - **CI/CD** - Comprehensive GitHub Actions workflow for PR checks
@@ -203,33 +204,37 @@ Or press `w` in the terminal after starting the dev server.
 ```
 react-native-szumplate/
 ├── .github/
+│   ├── dependabot.yml           # Automated dependency updates
 │   └── workflows/
-│       └── pr-check.yml        # CI/CD workflow for PR checks
+│       └── pr-check.yml         # CI/CD workflow for PR checks
 ├── src/
-│   ├── app/                    # Expo Router file-based routes
-│   │   ├── _layout.tsx         # Root layout with navigation
-│   │   ├── index.tsx           # Home screen
-│   │   └── global.css          # Global Tailwind styles
-│   ├── components/             # Reusable UI components
-│   ├── hooks/                  # Custom React hooks (ready for use)
-│   ├── utils/                  # Utility functions (ready for use)
-│   ├── data/                   # Data models and schemas
-│   │   └── env.ts              # Environment variables validation
-│   ├── server/                 # API/Server logic (ready for use)
-│   └── tests/                  # Test files (ready for use)
-├── assets/                     # Static assets (images, fonts)
-├── scripts/                    # Build and utility scripts
-├── .env.local                  # Local environment variables (gitignored)
-├── .env.example                # Environment variables template
-├── app.config.ts               # Expo app configuration
-├── babel.config.js             # Babel configuration
-├── eslint.config.cjs           # ESLint configuration (Expo flat config)
-├── metro.config.cjs            # Metro bundler configuration
-├── prettier.config.mjs         # Prettier configuration
-├── tailwind.config.ts          # Tailwind CSS configuration
-├── tsconfig.json               # TypeScript configuration
-├── SECURITY.md                 # Security policy
-└── package.json                # Project dependencies and scripts
+│   ├── app/                     # Expo Router file-based routes
+│   │   ├── _layout.tsx          # Root layout (Stack navigator)
+│   │   ├── index.tsx            # Home screen
+│   │   └── global.css           # Global Tailwind styles
+│   ├── components/              # Reusable UI components
+│   │   ├── action-button.tsx    # Action button component
+│   │   ├── feature-card.tsx     # Feature card component
+│   │   └── tech-badge.tsx       # Tech badge component
+│   ├── hooks/                   # Custom React hooks (ready for use)
+│   ├── utils/                   # Utility functions (ready for use)
+│   ├── data/                    # Data models and schemas
+│   │   └── env.ts               # Environment variables validation
+│   ├── server/                  # API/Server logic (ready for use)
+│   └── tests/                   # Test files (ready for use)
+├── assets/                      # Static assets (images, fonts)
+├── scripts/                     # Build and utility scripts
+├── .env.local                   # Local environment variables (gitignored)
+├── .env.example                 # Environment variables template
+├── app.config.ts                # Expo app configuration
+├── babel.config.js              # Babel configuration (NativeWind presets)
+├── eslint.config.cjs            # ESLint configuration (Expo flat config)
+├── metro.config.cjs             # Metro bundler configuration (NativeWind)
+├── prettier.config.mjs          # Prettier configuration
+├── tailwind.config.ts           # Tailwind CSS configuration
+├── tsconfig.json                # TypeScript configuration
+├── SECURITY.md                  # Security policy
+└── package.json                 # Project dependencies and scripts
 ```
 
 ### Key Directories
@@ -243,14 +248,15 @@ react-native-szumplate/
 
 ### Important Configuration Files
 
-- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled, React Compiler experimental support)
-- **`babel.config.js`** - Babel transpiler configuration (Reanimated plugin must be last!)
+- **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled, React Compiler experimental support, typed routes)
+- **`babel.config.js`** - Babel transpiler configuration with NativeWind JSX import source and presets
 - **`eslint.config.cjs`** - ESLint 9 flat config with Expo preset
-- **`metro.config.cjs`** - Metro bundler configuration for JavaScript transformation
+- **`metro.config.cjs`** - Metro bundler configuration with NativeWind integration
 - **`prettier.config.mjs`** - Prettier code formatting with @szum-tech/prettier-config
-- **`tailwind.config.ts`** - Tailwind CSS customization (colors, spacing, fonts, etc.)
-- **`tsconfig.json`** - TypeScript compiler options, strict mode, and path aliases
+- **`tailwind.config.ts`** - Tailwind CSS customization with NativeWind preset (colors, spacing, fonts, etc.)
+- **`tsconfig.json`** - TypeScript compiler options, strict mode, and path aliases (`~/*` maps to `./src/*`)
 - **`.github/workflows/pr-check.yml`** - Comprehensive CI/CD pipeline with code quality, security, and build validation checks
+- **`.github/dependabot.yml`** - Automated weekly dependency updates for npm and GitHub Actions
 
 ---
 
@@ -314,7 +320,7 @@ EXPO_PUBLIC_ENABLE_FEATURE_X=true
 
 ### 💻 Environment Variables Handling
 
-This template uses **T3 Env 0.13.8** with **Zod 4.1.11** for runtime validation of environment variables in `src/data/env.ts`.
+This template uses **T3 Env 0.13** with **Zod 4.3** for runtime validation of environment variables in `src/data/env.ts`.
 
 #### Configuration
 
@@ -441,7 +447,7 @@ For VSCode, install the [Tailwind CSS IntelliSense](https://marketplace.visualst
 
 ## ⚡ Animations
 
-This template includes **Reanimated 4.1** for butter-smooth, 60 FPS animations that run on the native thread.
+This template includes **Reanimated 4.2** for butter-smooth, 60 FPS animations that run on the native thread.
 
 ### Usage Example
 
@@ -470,18 +476,20 @@ export default function AnimatedBox() {
 }
 ```
 
-### Important: Babel Configuration
+### Babel Configuration
 
-Reanimated requires a Babel plugin that **must be the last plugin** in your `babel.config.js`:
+The template uses `babel-preset-expo` with NativeWind JSX import source. Reanimated is supported out of the box via Expo's preset:
 
 ```javascript
-module.exports = {
-  presets: ['babel-preset-expo'],
-  plugins: [
-    // ... other plugins
-    'react-native-reanimated/plugin', // Must be last!
-  ],
-};
+export default function (api) {
+  api.cache(true);
+  return {
+    presets: [
+      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+      "nativewind/babel"
+    ]
+  };
+}
 ```
 
 ### Troubleshooting
@@ -565,7 +573,7 @@ const user = UserSchema.parse(data);
 
 ### Linting
 
-ESLint 9.25 is configured with Expo's flat config preset:
+ESLint 9 is configured with Expo's flat config preset:
 
 ```bash
 # Check for linting errors
@@ -580,7 +588,7 @@ npm run lint:ci
 
 ### Type Checking
 
-TypeScript 5.9 with strict mode enabled:
+TypeScript 5.9 with strict mode enabled (extends `expo/tsconfig.base`):
 
 ```bash
 npm run type-check
@@ -588,7 +596,7 @@ npm run type-check
 
 ### Formatting
 
-Prettier 3.6.2 is configured with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config) 1.6.2:
+Prettier 3.8 is configured with [@szum-tech/prettier-config](https://www.npmjs.com/package/@szum-tech/prettier-config):
 
 ```bash
 # Check formatting
@@ -617,6 +625,9 @@ GitHub Actions workflow (`.github/workflows/pr-check.yml`) automatically runs on
 - 📊 **Bundle Size Analysis** - Compares bundle size against base branch and comments on PR with detailed metrics
 
 All checks run on **Node.js 22.x** with proper caching for faster execution.
+
+#### Automated Dependency Management
+- 🤖 **Dependabot** - Weekly automated dependency updates for both npm packages and GitHub Actions, configured in `.github/dependabot.yml`
 
 ### Pre-Commit Workflow (Recommended)
 
@@ -738,11 +749,11 @@ npm update
 
 ### Common Issues and Solutions
 
-#### Reanimated Plugin Not Working
+#### Reanimated Not Working
 
 **Problem**: Animations don't work or you see Reanimated errors.
 
-**Solution**: Ensure the Reanimated plugin is the **last plugin** in `babel.config.js`, then clear cache:
+**Solution**: Reanimated is configured via `babel-preset-expo`. Clear the cache and restart:
 
 ```bash
 npx expo start -c
