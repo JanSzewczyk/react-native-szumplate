@@ -2,7 +2,8 @@ import { Text, ScrollView, View, Linking } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { AnimatedView, AnimatedText } from "~/components/animated";
 import { FeatureCard } from "~/components/feature-card";
 import { TechBadge } from "~/components/tech-badge";
 import { ActionButton } from "~/components/action-button";
@@ -71,7 +72,7 @@ export default function Index() {
       <BlurView
         intensity={40}
         tint="light"
-        className="absolute left-0 right-0 top-0 z-[999]"
+        className="absolute top-0 right-0 left-0 z-999"
         style={{
           height: insets.top || 44
         }}
@@ -80,47 +81,49 @@ export default function Index() {
       <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false} contentContainerClassName="pb-10">
         <SafeAreaView className="flex-1">
           {/* Hero Section */}
-          <Animated.View entering={FadeInUp.delay(200).duration(800)} className="px-6 pb-6 pt-8">
+          <AnimatedView entering={FadeInUp.delay(200).duration(800)} className="px-6 pt-8 pb-6">
             <View className="items-center">
-              <Animated.View
+              <AnimatedView
                 entering={FadeInUp.delay(400).duration(600)}
                 className="mb-6 size-24 items-center justify-center rounded-3xl shadow-lg"
               >
-                <Ionicons name="rocket" size={48} color="white" />
-              </Animated.View>
+                <Ionicons
+                  name="rocket"
+                  size={48}
+                  color="black
+                "
+                />
+              </AnimatedView>
 
-              <Animated.Text
+              <AnimatedText
                 entering={FadeInUp.delay(600).duration(600)}
                 className="mb-3 text-center text-4xl font-bold text-gray-900"
               >
                 React Native
-              </Animated.Text>
-              <Animated.Text
+              </AnimatedText>
+              <AnimatedText
                 entering={FadeInUp.delay(700).duration(600)}
                 className="mb-4 text-center text-4xl font-bold text-blue-500"
               >
                 Szumplate
-              </Animated.Text>
+              </AnimatedText>
 
-              <Animated.Text
-                entering={FadeInUp.delay(800).duration(600)}
-                className="max-w-sm px-4 text-center text-lg leading-7 text-gray-600"
-              >
+              <Text className="max-w-sm px-4 text-center text-lg leading-7 text-gray-600">
                 A modern, production-ready starter template with TypeScript, Expo, and industry best practices
-              </Animated.Text>
+              </Text>
             </View>
-          </Animated.View>
+          </AnimatedView>
           {/* Features Section */}
           <View className="mt-8 px-6">
-            <Animated.Text
+            <AnimatedText
               entering={FadeInDown.delay(1000).duration(600)}
               className="mb-2 text-2xl font-bold text-gray-900"
             >
               ✨ Features & Benefits
-            </Animated.Text>
-            <Animated.Text entering={FadeInDown.delay(1100).duration(600)} className="mb-6 leading-6 text-gray-600">
+            </AnimatedText>
+            <AnimatedText entering={FadeInDown.delay(1100).duration(600)} className="mb-6 leading-6 text-gray-600">
               Everything you need to build professional mobile applications
-            </Animated.Text>
+            </AnimatedText>
 
             {features.map((feature, index) => (
               <FeatureCard
@@ -133,7 +136,7 @@ export default function Index() {
             ))}
           </View>
           {/* Tech Stack Section */}
-          <Animated.View entering={FadeInDown.delay(1800).duration(600)} className="mt-8 px-6">
+          <AnimatedView entering={FadeInDown.delay(1800).duration(600)} className="mt-8 px-6">
             <Text className="mb-2 text-2xl font-bold text-gray-900">🛠 Tech Stack</Text>
             <Text className="mb-4 leading-6 text-gray-600">Built with the latest and greatest tools</Text>
             <View className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -143,9 +146,9 @@ export default function Index() {
                 ))}
               </View>
             </View>
-          </Animated.View>
+          </AnimatedView>
           {/* Action Section */}
-          <Animated.View entering={FadeInDown.delay(2000).duration(600)} className="mt-8 gap-y-4 px-6">
+          <AnimatedView entering={FadeInDown.delay(2000).duration(600)} className="mt-8 gap-y-4 px-6">
             <Text className="mb-4 text-center text-2xl font-bold text-gray-900">Ready to Build?</Text>
 
             <ActionButton
@@ -168,9 +171,9 @@ export default function Index() {
               variant="secondary"
               onPress={() => Linking.openURL("https://github.com/JanSzewczyk/react-native-szumplate")}
             />
-          </Animated.View>
+          </AnimatedView>
           {/* Footer */}
-          <Animated.View
+          <AnimatedView
             entering={FadeInDown.delay(2200).duration(600)}
             className="mt-12 items-center border-t border-gray-200 px-6 pt-8"
           >
@@ -180,7 +183,7 @@ export default function Index() {
                 <Text className="text-sm font-medium text-gray-600">Version 1.0.0 • Production Ready</Text>
               </View>
             </View>
-          </Animated.View>
+          </AnimatedView>
         </SafeAreaView>
       </ScrollView>
     </>

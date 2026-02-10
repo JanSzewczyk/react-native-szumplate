@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Text } from "react-native";
-import Animated, { FadeInRight } from "react-native-reanimated";
+import { FadeInRight } from "react-native-reanimated";
+import { AnimatedView } from "~/components/animated";
 
 type TechBadgeProps = {
   name: string;
@@ -17,11 +18,11 @@ export function TechBadge({ name, index, color = "blue" }: TechBadgeProps) {
   };
 
   return (
-    <Animated.View
+    <AnimatedView
       entering={FadeInRight.delay(1200 + index * 50).duration(400)}
       className={`rounded-full border px-4 py-2 ${colorClasses[color]} m-1`}
     >
       <Text className={`text-sm font-medium ${colorClasses[color].split(" ")[2]}`}>{name}</Text>
-    </Animated.View>
+    </AnimatedView>
   );
 }

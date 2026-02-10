@@ -31,7 +31,7 @@
 ## ✨ Features
 
 ### 🎯 Core Technologies
-- **React Native 0.83** with **React 19.2** - Latest stable versions
+- **React Native 0.81** with **React 19.1** - Expo SDK 54 compatible versions
 - **Expo SDK 54** - Managed workflow with EAS Build support
 - **TypeScript 5.9** - Full type safety across the entire codebase
 - **Metro Bundler** - Optimized for fast refresh and bundling
@@ -42,15 +42,15 @@
 - **Type-safe routing** - Fully typed navigation params
 
 ### 🎨 Styling & UI
-- **NativeWind 4.2** - Tailwind CSS for React Native
-- **Tailwind CSS 3.4** - Utility-first CSS framework
+- **NativeWind 5** (preview) - Tailwind CSS for React Native
+- **Tailwind CSS 4** - Utility-first CSS framework
 - **Expo Blur** - Native blur effects
 - **Expo Image** - Optimized image component
 - **Expo Symbols** - Native SF Symbols support
 - **Vector Icons** - Comprehensive icon library
 
 ### ⚡ Animations & Gestures
-- **Reanimated 4.2** - 60 FPS native animations
+- **Reanimated 4.1** - 60 FPS native animations
 - **Gesture Handler** - Native touch handling
 - **React Native Worklets** - Run JavaScript on UI thread
 
@@ -103,7 +103,7 @@
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** 22+ - [Download](https://nodejs.org/)
+- **Node.js** 24+ - [Download](https://nodejs.org/)
 - **npm** (comes with Node.js) or your preferred package manager
 - **Git** - [Download](https://git-scm.com/)
 
@@ -227,11 +227,11 @@ react-native-szumplate/
 ├── .env.local                   # Local environment variables (gitignored)
 ├── .env.example                 # Environment variables template
 ├── app.config.ts                # Expo app configuration
-├── babel.config.js              # Babel configuration (NativeWind presets)
+├── babel.config.js              # Babel configuration
 ├── eslint.config.cjs            # ESLint configuration (Expo flat config)
 ├── metro.config.cjs             # Metro bundler configuration (NativeWind)
+├── postcss.config.mjs           # PostCSS configuration (Tailwind CSS v4)
 ├── prettier.config.mjs          # Prettier configuration
-├── tailwind.config.ts           # Tailwind CSS configuration
 ├── tsconfig.json                # TypeScript configuration
 ├── SECURITY.md                  # Security policy
 └── package.json                 # Project dependencies and scripts
@@ -249,11 +249,11 @@ react-native-szumplate/
 ### Important Configuration Files
 
 - **`app.config.ts`** - Expo app configuration (name, version, bundle IDs, platform settings, new architecture enabled, React Compiler experimental support, typed routes)
-- **`babel.config.js`** - Babel transpiler configuration with NativeWind JSX import source and presets
+- **`babel.config.js`** - Babel transpiler configuration with `babel-preset-expo`
 - **`eslint.config.cjs`** - ESLint 9 flat config with Expo preset
 - **`metro.config.cjs`** - Metro bundler configuration with NativeWind integration
+- **`postcss.config.mjs`** - PostCSS configuration with `@tailwindcss/postcss` plugin (Tailwind CSS v4)
 - **`prettier.config.mjs`** - Prettier code formatting with @szum-tech/prettier-config
-- **`tailwind.config.ts`** - Tailwind CSS customization with NativeWind preset (colors, spacing, fonts, etc.)
 - **`tsconfig.json`** - TypeScript compiler options, strict mode, and path aliases (`~/*` maps to `./src/*`)
 - **`.github/workflows/pr-check.yml`** - Comprehensive CI/CD pipeline with code quality, security, and build validation checks
 - **`.github/dependabot.yml`** - Automated weekly dependency updates for npm and GitHub Actions
@@ -399,7 +399,7 @@ console.log(env.EXPO_PUBLIC_NEW_VARIABLE);
 
 ## 🎨 Styling with NativeWind
 
-This template uses **NativeWind 4.2**, which brings Tailwind CSS to React Native.
+This template uses **NativeWind 5** (preview) with **Tailwind CSS 4**, which brings Tailwind CSS to React Native. NativeWind v5 uses PostCSS-based processing and CSS layer imports instead of the traditional `tailwind.config` file.
 
 ### Usage
 
@@ -419,21 +419,26 @@ export default function MyComponent() {
 
 ### Configuration
 
-Tailwind configuration is in `tailwind.config.ts`. Customize colors, spacing, fonts, and more:
+Tailwind CSS v4 eliminates the traditional `tailwind.config.ts` file. Configuration is now done via CSS in `src/app/global.css`:
 
-```typescript
-// tailwind.config.ts
-module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#your-color',
-      },
-    },
-  },
-};
+```css
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
 ```
+
+To customize theme values (colors, spacing, fonts, etc.), use the `@theme` directive in your CSS:
+
+```css
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #10b981;
+}
+```
+
+PostCSS is configured in `postcss.config.mjs` with the `@tailwindcss/postcss` plugin.
 
 ### Global Styles
 
@@ -447,7 +452,7 @@ For VSCode, install the [Tailwind CSS IntelliSense](https://marketplace.visualst
 
 ## ⚡ Animations
 
-This template includes **Reanimated 4.2** for butter-smooth, 60 FPS animations that run on the native thread.
+This template includes **Reanimated 4.1** for butter-smooth, 60 FPS animations that run on the native thread.
 
 ### Usage Example
 
@@ -478,16 +483,13 @@ export default function AnimatedBox() {
 
 ### Babel Configuration
 
-The template uses `babel-preset-expo` with NativeWind JSX import source. Reanimated is supported out of the box via Expo's preset:
+The template uses `babel-preset-expo`. NativeWind v5 no longer requires a custom JSX import source or Babel preset - it handles styling via Metro and PostCSS instead:
 
 ```javascript
 export default function (api) {
   api.cache(true);
   return {
-    presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-      "nativewind/babel"
-    ]
+    presets: ["babel-preset-expo"]
   };
 }
 ```

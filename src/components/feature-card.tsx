@@ -1,7 +1,8 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import { FadeInDown } from "react-native-reanimated";
+import { AnimatedView } from "~/components/animated";
 
 type FeatureCardProps = {
   icon: keyof typeof Ionicons.glyphMap;
@@ -12,7 +13,7 @@ type FeatureCardProps = {
 
 export function FeatureCard({ icon, title, description, index }: FeatureCardProps) {
   return (
-    <Animated.View
+    <AnimatedView
       entering={FadeInDown.delay(600 + index * 100).duration(600)}
       className="mb-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
     >
@@ -25,6 +26,6 @@ export function FeatureCard({ icon, title, description, index }: FeatureCardProp
           <Text className="text-sm leading-6 text-gray-600">{description}</Text>
         </View>
       </View>
-    </Animated.View>
+    </AnimatedView>
   );
 }
